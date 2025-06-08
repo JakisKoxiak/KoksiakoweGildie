@@ -39,14 +39,21 @@ public class GildiaCommand implements CommandExecutor {
                 return true;
             }
             
-            if (args.length < 3) {
+            if (args.length < 2) {
                 player.sendMessage(messages.getMessage("gildia.uzycie_admin"));
                 return true;
             }
 
             switch (args[1].toLowerCase()) {
                 case "usun":
+                    if (args.length < 3) {
+                        player.sendMessage(messages.getMessage("gildia.uzycie_admin_usun"));
+                        return true;
+                    }
                     usunGildieAdmin(player, args[2]);
+                    break;
+                case "reload":
+                    reloadPlugin(player);
                     break;
                 default:
                     player.sendMessage(messages.getMessage("gildia.nieznana_komenda_admin"));
@@ -56,14 +63,6 @@ public class GildiaCommand implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
-            case "reload":
-                if (!player.hasPermission("gildie.admin")) {
-                    player.sendMessage(messages.getMessage("gildia.nie_lider"));
-                    return true;
-                }
-                reloadPlugin(player);
-                break;
-
             case "zaloz":
                 if (args.length < 3) {
                     player.sendMessage(messages.getMessage("gildia.uzycie_zaloz"));
@@ -128,7 +127,7 @@ public class GildiaCommand implements CommandExecutor {
         player.sendMessage(messages.getMessage("pomoc.naglowek"));
         if (player.hasPermission("gildie.admin")) {
             player.sendMessage(messages.getMessage("pomoc.admin"));
-            player.sendMessage(messages.getMessage("pomoc.reload"));
+            player.sendMessage(messages.getMessage("pomoc.admin_reload"));
         }
         player.sendMessage(messages.getMessage("pomoc.zaloz"));
         player.sendMessage(messages.getMessage("pomoc.usun"));

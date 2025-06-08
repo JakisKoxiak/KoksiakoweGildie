@@ -33,7 +33,8 @@ gildia:
   nie_mozna_opuscic: "&cNie możesz opuścić gildii, ponieważ jesteś jej liderem! Najpierw usuń gildię lub przekaż przywództwo."
   nie_jestes_w_gildii: "&cNie jesteś w żadnej gildii!"
   nie_masz_pieniedzy: "&cNie masz wystarczająco pieniędzy! Potrzebujesz %koszt%!"
-  uzycie_admin: "&cUżycie: /gildia admin <usun> <nazwa>"
+  uzycie_admin: "&cUżycie: /gildia admin <usun|reload> [nazwa]"
+  uzycie_admin_usun: "&cUżycie: /gildia admin usun <nazwa>"
   nieznana_komenda_admin: "&cNieznana komenda administracyjna!"
   usunieto_admin: "&cAdministrator %gracz% usunął gildię %nazwa%!"
   przeladowano: "&aPrzeładowano konfigurację i wiadomości pluginu!"
@@ -82,7 +83,7 @@ info:
 pomoc:
   naglowek: "&6=== Pomoc Gildii ==="
   admin: "&c/gildia admin usun <nazwa> &7- Usuń gildię (tylko admin)"
-  reload: "&c/gildia reload &7- Przeładuj konfigurację (tylko admin)"
+  admin_reload: "&c/gildia admin reload &7- Przeładuj konfigurację (tylko admin)"
   zaloz: "&e/gildia zaloz <nazwa> <tag> &7- Załóż nową gildię"
   usun: "&e/gildia usun <nazwa> &7- Usuń swoją gildię"
   zapros: "&e/gildia zapros <gracz> &7- Zaproś gracza do gildii"
