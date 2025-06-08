@@ -69,7 +69,7 @@ Plik zawiera wszystkie wiadomości wyświetlane graczom. Możesz je dostosować 
 - `/gildia zapros <gracz>` - Zaproś gracza do gildii
 - `/gildia wyrzuc <gracz>` - Wyrzuć gracza z gildii
 - `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę gildii
-- `/gildia info [nazwa]` - Wyświetl informacje o gildii
+- `/gildia info <nazwa>` - Wyświetl informacje o gildii
 
 ## Uprawnienia
 
