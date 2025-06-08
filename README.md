@@ -72,16 +72,13 @@ Plik zawiera wszystkie wiadomości wyświetlane graczom. Możesz je dostosować 
 - `/gildia lista` - Zobacz listę wszystkich gildii
 - `/gildia zapros <gracz>` - Zaproś gracza do gildii
 - `/gildia wyrzuc <gracz>` - Wyrzuć gracza z gildii
-<<<<<<< HEAD
 - `/gildia opusc` - Opuść gildię
-- `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę lidera
+- `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę gildii
+- `/gildia info <nazwa>` - Wyświetl informacje o gildii
 
 ### Komendy administracyjne
 - `/gildia admin usun <nazwa>` - Usuń dowolną gildię (wymaga uprawnienia gildie.admin)
-=======
-- `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę gildii
-- `/gildia info <nazwa>` - Wyświetl informacje o gildii
->>>>>>> 29ca42f0475525f55162e394f6ddef4ec2509ebf
+- `/gildia reload` - Przeładuj konfigurację i wiadomości pluginu (wymaga uprawnienia gildie.admin)
 
 ## Uprawnienia
 

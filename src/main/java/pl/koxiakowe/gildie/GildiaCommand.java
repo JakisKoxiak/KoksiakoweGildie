@@ -56,6 +56,14 @@ public class GildiaCommand implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
+            case "reload":
+                if (!player.hasPermission("gildie.admin")) {
+                    player.sendMessage(messages.getMessage("gildia.nie_lider"));
+                    return true;
+                }
+                reloadPlugin(player);
+                break;
+
             case "zaloz":
                 if (args.length < 3) {
                     player.sendMessage(messages.getMessage("gildia.uzycie_zaloz"));
@@ -120,6 +128,7 @@ public class GildiaCommand implements CommandExecutor {
         player.sendMessage(messages.getMessage("pomoc.naglowek"));
         if (player.hasPermission("gildie.admin")) {
             player.sendMessage(messages.getMessage("pomoc.admin"));
+            player.sendMessage(messages.getMessage("pomoc.reload"));
         }
         player.sendMessage(messages.getMessage("pomoc.zaloz"));
         player.sendMessage(messages.getMessage("pomoc.usun"));
@@ -302,5 +311,15 @@ public class GildiaCommand implements CommandExecutor {
 
         gildiaManager.usunGildie(nazwa);
         player.sendMessage(messages.getMessage("gildia.usunieta_admin", "nazwa", nazwa));
+    }
+
+    private void reloadPlugin(Player player) {
+        gildiaManager.saveGildie();
+        
+        plugin.reloadConfig();
+        
+        plugin.getMessages().reload();
+        
+        player.sendMessage(messages.getMessage("gildia.przeladowano"));
     }
 } 

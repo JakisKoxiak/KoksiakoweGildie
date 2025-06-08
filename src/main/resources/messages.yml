@@ -36,6 +36,9 @@ gildia:
   uzycie_admin: "&cUżycie: /gildia admin <usun> <nazwa>"
   nieznana_komenda_admin: "&cNieznana komenda administracyjna!"
   usunieto_admin: "&cAdministrator %gracz% usunął gildię %nazwa%!"
+  przeladowano: "&aPrzeładowano konfigurację i wiadomości pluginu!"
+  juz_jestes_w_gildii: "&cJuż jesteś w gildii!"
+  usunieta_admin: "&cAdministrator %gracz% usunął gildię %nazwa%!"
 
 # Wiadomości członków
 czlonkowie:
@@ -79,6 +82,7 @@ info:
 pomoc:
   naglowek: "&6=== Pomoc Gildii ==="
   admin: "&c/gildia admin usun <nazwa> &7- Usuń gildię (tylko admin)"
+  reload: "&c/gildia reload &7- Przeładuj konfigurację (tylko admin)"
   zaloz: "&e/gildia zaloz <nazwa> <tag> &7- Załóż nową gildię"
   usun: "&e/gildia usun <nazwa> &7- Usuń swoją gildię"
   zapros: "&e/gildia zapros <gracz> &7- Zaproś gracza do gildii"
