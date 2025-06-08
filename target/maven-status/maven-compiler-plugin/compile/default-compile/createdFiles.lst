@@ -1,4 +1,5 @@
 pl\koxiakowe\gildie\GildiaManager.class
+pl\koxiakowe\gildie\database\BazaManager.class
 pl\koxiakowe\gildie\GildiaCommand.class
 pl\koxiakowe\gildie\GildieExpansion.class
 pl\koxiakowe\gildie\Messages.class

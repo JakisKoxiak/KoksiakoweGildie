@@ -1,7 +1,7 @@
 # Konfiguracja pluginu KoxiakoweGildie
 
 # Koszt założenia gildii
-koszt_zakladania_gildii: 10000.0
+koszt_zakladania_gildii: 1000.0
 
 # Maksymalna długość nazwy gildii
 maksymalna_dlugosc_nazwy: 20
@@ -13,4 +13,26 @@ maksymalna_dlugosc_tagu: 5
 minimalna_dlugosc_nazwy: 3
 
 # Minimalna długość tagu gildii
-minimalna_dlugosc_tagu: 2 
+minimalna_dlugosc_tagu: 2
+
+# Ustawienia placeholderów
+placeholdery:
+  # Wartość zwracana gdy gracz nie jest w gildii
+  brak_gildii:
+    nazwa: "Brak"
+    tag: "Brak"
+    czlonkowie: "0"
+
+# Ustawienia bazy danych
+baza_danych:
+  # Typ bazy danych (sqlite lub mysql)
+  typ: "sqlite"
+  # Interwał zapisywania w minutach
+  interwal_zapisywania: 5
+  # Ustawienia MySQL (ignorowane jeśli typ = sqlite)
+  mysql:
+    host: "localhost"
+    port: 3306
+    baza: "gildie"
+    uzytkownik: "root"
+    haslo: "haslo" 

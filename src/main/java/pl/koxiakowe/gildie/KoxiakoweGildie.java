@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.koxiakowe.gildie.database.BazaManager;
 
 public class KoxiakoweGildie extends JavaPlugin {
     private static KoxiakoweGildie instance;
@@ -13,6 +14,7 @@ public class KoxiakoweGildie extends JavaPlugin {
     private FileConfiguration config;
     private GildiaManager gildiaManager;
     private Messages messages;
+    private BazaManager bazaManager;
 
     @Override
     public void onEnable() {
@@ -22,17 +24,21 @@ public class KoxiakoweGildie extends JavaPlugin {
         config = getConfig();
         
         if (!setupEconomy()) {
-            getLogger().severe("Nie znaleziono pluginu Vault! Plugin zostanie wyłączony!");
+            getLogger().severe("Nie znaleziono pluginu Vault! Wyłączanie...");
             getServer().getPluginManager().disablePlugin(this);
             return;
+        } else {
+            getLogger().info("Zarejestrowano integrację z Vault!");
         }
-        
-        messages = new Messages(this);
-        gildiaManager = new GildiaManager(this);
         
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new GildieExpansion(this).register();
+            getLogger().info("Zarejestrowano integrację z PlaceholderAPI!");
         }
+        
+        messages = new Messages(this);
+        bazaManager = new BazaManager(this);
+        gildiaManager = new GildiaManager(this);
         
         getCommand("gildia").setExecutor(new GildiaCommand(this));
         getLogger().info("Plugin KoxiakoweGildie został włączony!");
@@ -41,13 +47,16 @@ public class KoxiakoweGildie extends JavaPlugin {
     @Override
     public void onDisable() {
         if (gildiaManager != null) {
-            gildiaManager.saveGildie();
+            gildiaManager.onDisable();
+        }
+        if (bazaManager != null) {
+            bazaManager.close();
         }
         getLogger().info("Plugin KoxiakoweGildie został wyłączony!");
     }
 
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
@@ -72,5 +81,9 @@ public class KoxiakoweGildie extends JavaPlugin {
 
     public Messages getMessages() {
         return messages;
+    }
+
+    public BazaManager getBazaManager() {
+        return bazaManager;
     }
 } 

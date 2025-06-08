@@ -1,82 +1,42 @@
 package pl.koxiakowe.gildie;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import pl.koxiakowe.gildie.database.BazaManager;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class GildiaManager {
     private final KoxiakoweGildie plugin;
     private final Map<String, Gildia> gildie;
     private final Map<UUID, String> graczeGildie;
-    private File gildieFile;
-    private FileConfiguration gildieConfig;
+    private final BazaManager bazaManager;
 
     public GildiaManager(KoxiakoweGildie plugin) {
         this.plugin = plugin;
         this.gildie = new HashMap<>();
         this.graczeGildie = new HashMap<>();
+        this.bazaManager = plugin.getBazaManager();
         loadGildie();
     }
 
     public void loadGildie() {
-        gildieFile = new File(plugin.getDataFolder(), "gildie.yml");
-        if (!gildieFile.exists()) {
-            try {
-                gildieFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        gildieConfig = YamlConfiguration.loadConfiguration(gildieFile);
-        
-        if (gildieConfig.contains("gildie")) {
-            for (String nazwa : gildieConfig.getConfigurationSection("gildie").getKeys(false)) {
-                String tag = gildieConfig.getString("gildie." + nazwa + ".tag");
-                UUID lider = UUID.fromString(gildieConfig.getString("gildie." + nazwa + ".lider"));
-                Gildia gildia = new Gildia(nazwa, tag, lider);
-                
-                for (String uuidStr : gildieConfig.getStringList("gildie." + nazwa + ".czlonkowie")) {
-                    UUID uuid = UUID.fromString(uuidStr);
-                    gildia.dodajCzlonka(uuid);
-                    graczeGildie.put(uuid, nazwa);
-                }
-                
-                for (String uuidStr : gildieConfig.getStringList("gildie." + nazwa + ".zastepcy")) {
-                    gildia.dodajZastepce(UUID.fromString(uuidStr));
-                }
-                
-                gildie.put(nazwa, gildia);
-            }
-        }
+        bazaManager.loadAllGildie();
     }
 
     public void saveGildie() {
-        for (Map.Entry<String, Gildia> entry : gildie.entrySet()) {
-            String nazwa = entry.getKey();
-            Gildia gildia = entry.getValue();
-            
-            gildieConfig.set("gildie." + nazwa + ".tag", gildia.getTag());
-            gildieConfig.set("gildie." + nazwa + ".lider", gildia.getLider().toString());
-            
-            gildieConfig.set("gildie." + nazwa + ".czlonkowie", 
-                gildia.getCzlonkowie().stream().map(UUID::toString).collect(Collectors.toList()));
-            gildieConfig.set("gildie." + nazwa + ".zastepcy", 
-                gildia.getZastepcy().stream().map(UUID::toString).collect(Collectors.toList()));
+        bazaManager.saveAllGildie();
+    }
+
+    public void addGildia(Gildia gildia) {
+        gildie.put(gildia.getNazwa(), gildia);
+        for (UUID uuid : gildia.getCzlonkowie()) {
+            graczeGildie.put(uuid, gildia.getNazwa());
         }
-        
-        try {
-            gildieConfig.save(gildieFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public Collection<Gildia> getAllGildie() {
+        return gildie.values();
     }
 
     public boolean stworzGildie(String nazwa, String tag, Player lider) {
@@ -85,14 +45,15 @@ public class GildiaManager {
         }
         
         double koszt = plugin.getConfig().getDouble("koszt_zakladania_gildii");
-        if (plugin.getEconomy().getBalance(lider) < koszt) {
+        double saldo = plugin.getEconomy().getBalance(lider);
+        plugin.getLogger().info("DEBUG: Gracz " + lider.getName() + " ma saldo: " + saldo + ", koszt: " + koszt);
+        if (saldo < koszt) {
             return false;
         }
         
         plugin.getEconomy().withdrawPlayer(lider, koszt);
         Gildia gildia = new Gildia(nazwa, tag, lider.getUniqueId());
-        gildie.put(nazwa, gildia);
-        graczeGildie.put(lider.getUniqueId(), nazwa);
+        addGildia(gildia);
         saveGildie();
         return true;
     }
@@ -123,7 +84,11 @@ public class GildiaManager {
 
     public boolean zaprosGracza(Player zapraszajacy, Player zapraszany) {
         Gildia gildia = getGildiaGracza(zapraszajacy.getUniqueId());
-        if (gildia == null || !gildia.maUprawnienie("zapraszanie")) {
+        if (gildia == null) {
+            return false;
+        }
+
+        if (!gildia.getLider().equals(zapraszajacy.getUniqueId()) && !gildia.jestZastepca(zapraszajacy.getUniqueId())) {
             return false;
         }
         
@@ -137,12 +102,84 @@ public class GildiaManager {
         return true;
     }
 
-    public void wyrzucGracza(Player wyrzucajacy, Player wyrzucany) {
+    public boolean wyrzucGracza(Player wyrzucajacy, Player wyrzucany) {
         Gildia gildia = getGildiaGracza(wyrzucajacy.getUniqueId());
-        if (gildia != null && gildia.maUprawnienie("wyrzucanie")) {
-            gildia.usunCzlonka(wyrzucany.getUniqueId());
-            graczeGildie.remove(wyrzucany.getUniqueId());
-            saveGildie();
+        if (gildia == null) {
+            return false;
         }
+
+        if (wyrzucajacy.getUniqueId().equals(wyrzucany.getUniqueId())) {
+            return false;
+        }
+
+        if (!gildia.getLider().equals(wyrzucajacy.getUniqueId()) && !gildia.jestZastepca(wyrzucajacy.getUniqueId())) {
+            return false;
+        }
+
+        if (gildia.getLider().equals(wyrzucany.getUniqueId())) {
+            return false;
+        }
+
+        if (!gildia.jestCzlonkiem(wyrzucany.getUniqueId())) {
+            return false;
+        }
+
+        gildia.usunCzlonka(wyrzucany.getUniqueId());
+        graczeGildie.remove(wyrzucany.getUniqueId());
+        saveGildie();
+        return true;
+    }
+
+    public boolean opuscGildie(Player player) {
+        Gildia gildia = getGildiaGracza(player.getUniqueId());
+        if (gildia == null) {
+            return false;
+        }
+
+        if (gildia.getLider().equals(player.getUniqueId())) {
+            return false;
+        }
+
+        gildia.usunCzlonka(player.getUniqueId());
+        graczeGildie.remove(player.getUniqueId());
+        saveGildie();
+        return true;
+    }
+
+    public boolean mianujZastepce(Player lider, Player nowyZastepca) {
+        Gildia gildia = getGildiaGracza(lider.getUniqueId());
+        if (gildia == null) {
+            return false;
+        }
+
+        if (!gildia.getLider().equals(lider.getUniqueId())) {
+            return false;
+        }
+
+        if (lider.getUniqueId().equals(nowyZastepca.getUniqueId())) {
+            return false;
+        }
+        
+        if (gildia.getLider().equals(nowyZastepca.getUniqueId())) {
+            return false;
+        }
+        
+        if (!gildia.jestCzlonkiem(nowyZastepca.getUniqueId())) {
+            return false;
+        }
+
+        if (gildia.jestZastepca(nowyZastepca.getUniqueId())) {
+            gildia.usunZastepce(nowyZastepca.getUniqueId());
+            saveGildie();
+            return true;
+        } else {
+            gildia.dodajZastepce(nowyZastepca.getUniqueId());
+            saveGildie();
+            return true;
+        }
+    }
+
+    public void onDisable() {
+        bazaManager.close();
     }
 } 

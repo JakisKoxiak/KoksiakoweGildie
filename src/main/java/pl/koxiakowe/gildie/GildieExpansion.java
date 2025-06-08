@@ -18,12 +18,12 @@ public class GildieExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "Koxiakowe";
+        return "JakisKoxiak";
     }
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0";
+        return "1.0.0";
     }
 
     @Override
@@ -37,11 +37,29 @@ public class GildieExpansion extends PlaceholderExpansion {
             return "";
         }
 
-        if (params.equals("gracz")) {
-            Gildia gildia = plugin.getGildiaManager().getGildiaGracza(player.getUniqueId());
-            return gildia != null ? gildia.getNazwa() : "Brak";
+        Gildia gildia = plugin.getGildiaManager().getGildiaGracza(player.getUniqueId());
+        if (gildia == null) {
+            switch (params.toLowerCase()) {
+                case "gracz":
+                    return plugin.getConfig().getString("placeholdery.brak_gildii.nazwa", "Brak");
+                case "tag":
+                    return plugin.getConfig().getString("placeholdery.brak_gildii.tag", "Brak");
+                case "czlonkowie":
+                    return plugin.getConfig().getString("placeholdery.brak_gildii.czlonkowie", "0");
+                default:
+                    return "";
+            }
         }
 
-        return null;
+        switch (params.toLowerCase()) {
+            case "gracz":
+                return gildia.getNazwa();
+            case "tag":
+                return gildia.getTag();
+            case "czlonkowie":
+                return String.valueOf(gildia.getCzlonkowie().size());
+            default:
+                return "";
+        }
     }
 } 

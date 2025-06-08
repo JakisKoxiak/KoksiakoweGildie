@@ -31,10 +31,15 @@ public class Messages {
         
         prefix = ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("prefix", "&8[&6Gildie&8]"));
         
-        loadSection("guild", messagesConfig.getConfigurationSection("guild"));
-        loadSection("members", messagesConfig.getConfigurationSection("members"));
-        loadSection("deputy", messagesConfig.getConfigurationSection("deputy"));
+        messages.put("brak_uprawnien", messagesConfig.getString("brak_uprawnien"));
+        messages.put("tylko_gracz", messagesConfig.getString("tylko_gracz"));
+        messages.put("gracz_nie_znaleziony", messagesConfig.getString("gracz_nie_znaleziony"));
+
+        loadSection("gildia", messagesConfig.getConfigurationSection("gildia"));
+        loadSection("czlonkowie", messagesConfig.getConfigurationSection("czlonkowie"));
+        loadSection("zastepcy", messagesConfig.getConfigurationSection("zastepcy"));
         loadSection("info", messagesConfig.getConfigurationSection("info"));
+        loadSection("pomoc", messagesConfig.getConfigurationSection("pomoc"));
     }
 
     private void loadSection(String prefix, org.bukkit.configuration.ConfigurationSection section) {
