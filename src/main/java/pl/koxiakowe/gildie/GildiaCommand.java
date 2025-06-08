@@ -319,14 +319,11 @@ public class GildiaCommand implements CommandExecutor {
     }
 
     private void reloadPlugin(Player player) {
-        // Zapisz dane gildii przed przeładowaniem
         gildiaManager.saveGildie();
         
-        // Przeładuj konfigurację
         plugin.reloadConfig();
         plugin.getConfigManager().checkAndFixConfig();
         
-        // Przeładuj wiadomości
         plugin.reloadMessages();
         
         player.sendMessage(messages.getMessage("gildia.przeladowano"));
