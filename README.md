@@ -67,7 +67,7 @@ Plik zawiera wszystkie wiadomości wyświetlane graczom. Możesz je dostosować 
 ## Komendy
 
 - `/gildia zaloz <nazwa> <tag>` - Załóż nową gildię
-- `/gildia usun <nazwa>` - Usuń swoją gildię
+- `/gildia usun` - Usuń swoją gildię
 - `/gildia info [nazwa]` - Zobacz informacje o gildii
 - `/gildia zapros <gracz>` - Zaproś gracza do gildii
 - `/gildia wyrzuc <gracz>` - Wyrzuć gracza z gildii
