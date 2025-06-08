@@ -33,36 +33,35 @@ public class GildiaCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("admin")) {
-            if (!player.hasPermission("gildie.admin")) {
-                player.sendMessage(messages.getMessage("gildia.nie_lider"));
-                return true;
-            }
-            
-            if (args.length < 2) {
-                player.sendMessage(messages.getMessage("gildia.uzycie_admin"));
-                return true;
-            }
-
-            switch (args[1].toLowerCase()) {
-                case "usun":
-                    if (args.length < 3) {
-                        player.sendMessage(messages.getMessage("gildia.uzycie_admin_usun"));
-                        return true;
-                    }
-                    usunGildieAdmin(player, args[2]);
-                    break;
-                case "reload":
-                    reloadPlugin(player);
-                    break;
-                default:
-                    player.sendMessage(messages.getMessage("gildia.nieznana_komenda_admin"));
-                    break;
-            }
-            return true;
-        }
-
         switch (args[0].toLowerCase()) {
+            case "admin":
+                if (!player.hasPermission("gildie.admin")) {
+                    player.sendMessage(messages.getMessage("gildia.nie_lider"));
+                    return true;
+                }
+                
+                if (args.length < 2) {
+                    player.sendMessage(messages.getMessage("gildia.uzycie_admin"));
+                    return true;
+                }
+
+                switch (args[1].toLowerCase()) {
+                    case "usun":
+                        if (args.length < 3) {
+                            player.sendMessage(messages.getMessage("gildia.uzycie_admin_usun"));
+                            return true;
+                        }
+                        usunGildieAdmin(player, args[2]);
+                        break;
+                    case "reload":
+                        reloadPlugin(player);
+                        break;
+                    default:
+                        player.sendMessage(messages.getMessage("gildia.nieznana_komenda_admin"));
+                        break;
+                }
+                break;
+
             case "zaloz":
                 if (args.length < 3) {
                     player.sendMessage(messages.getMessage("gildia.uzycie_zaloz"));
@@ -72,11 +71,7 @@ public class GildiaCommand implements CommandExecutor {
                 break;
 
             case "usun":
-                if (args.length < 2) {
-                    player.sendMessage(messages.getMessage("gildia.uzycie_usun"));
-                    return true;
-                }
-                usunGildie(player, args[1]);
+                usunGildieByPlayer(player);
                 break;
 
             case "zapros":
@@ -151,20 +146,21 @@ public class GildiaCommand implements CommandExecutor {
         }
     }
 
-    private void usunGildie(Player player, String nazwa) {
-        Gildia gildia = gildiaManager.getGildia(nazwa);
+    private void usunGildieByPlayer(Player player) {
+        Gildia gildia = gildiaManager.getGildiaGracza(player.getUniqueId());
         if (gildia == null) {
-            player.sendMessage(messages.getMessage("gildia.nie_istnieje"));
+            player.sendMessage(messages.getMessage("gildia.nie_jestes_w_gildii"));
             return;
         }
 
-        if (!gildia.getLider().equals(player.getUniqueId()) && !player.hasPermission("gildie.admin")) {
+        if (!gildia.getLider().equals(player.getUniqueId())) {
             player.sendMessage(messages.getMessage("gildia.nie_lider"));
             return;
         }
 
-        gildiaManager.usunGildie(nazwa);
-        player.sendMessage(messages.getMessage("gildia.usunieta", "nazwa", nazwa));
+        String guildName = gildia.getNazwa();
+        gildiaManager.usunGildie(guildName);
+        player.sendMessage(messages.getMessage("gildia.usunieto", "nazwa", guildName));
     }
 
     private void zaprosGracza(Player player, String nazwaGracza) {
@@ -310,12 +306,12 @@ public class GildiaCommand implements CommandExecutor {
     private void usunGildieAdmin(Player player, String nazwa) {
         Gildia gildia = gildiaManager.getGildia(nazwa);
         if (gildia == null) {
-            player.sendMessage(messages.getMessage("gildia.nie_istnieje"));
+            player.sendMessage(messages.getMessage("gildia.nie_istnieje", "nazwa", nazwa));
             return;
         }
 
         gildiaManager.usunGildie(nazwa);
-        player.sendMessage(messages.getMessage("gildia.usunieta_admin", "nazwa", nazwa));
+        player.sendMessage(messages.getMessage("gildia.usunieta_admin", "nazwa", nazwa, "gracz", player.getName()));
     }
 
     private void reloadPlugin(Player player) {
