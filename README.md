@@ -2,6 +2,8 @@
 
 Plugin na Gildie Minecraft.
 
+**Wersja:** 1.1
+
 ## Wymagania
 
 - Minecraft 1.16.5 lub nowszy
@@ -65,16 +67,24 @@ Plik zawiera wszystkie wiadomości wyświetlane graczom. Możesz je dostosować 
 ## Komendy
 
 - `/gildia zaloz <nazwa> <tag>` - Załóż nową gildię
-- `/gildia usun <nazwa>` - Usuń gildię
+- `/gildia usun <nazwa>` - Usuń swoją gildię
+- `/gildia info [nazwa]` - Zobacz informacje o gildii
+- `/gildia lista` - Zobacz listę wszystkich gildii
 - `/gildia zapros <gracz>` - Zaproś gracza do gildii
 - `/gildia wyrzuc <gracz>` - Wyrzuć gracza z gildii
-- `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę gildii
-- `/gildia info [nazwa]` - Wyświetl informacje o gildii
+- `/gildia opusc` - Opuść gildię
+- `/gildia zastepca <gracz>` - Ustaw/usuń zastępcę lidera
+
+### Komendy administracyjne
+- `/gildia admin usun <nazwa>` - Usuń dowolną gildię (wymaga uprawnienia gildie.admin)
 
 ## Uprawnienia
 
 - `gildie.admin` - Uprawnienia administratora gildii (domyślnie: op)
+  - Pozwala na usuwanie dowolnych gildii bez bycia ich liderem
+  - Przydatne dla administratorów serwera
 - `gildie.zarzadzanie` - Uprawnienia do zarządzania gildią (domyślnie: true)
+  - Podstawowe uprawnienia do używania komend gildii
 
 ## Integracja z PlaceholderAPI
 

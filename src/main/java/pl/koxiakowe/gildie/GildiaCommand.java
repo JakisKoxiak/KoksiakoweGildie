@@ -33,6 +33,28 @@ public class GildiaCommand implements CommandExecutor {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("admin")) {
+            if (!player.hasPermission("gildie.admin")) {
+                player.sendMessage(messages.getMessage("gildia.nie_lider"));
+                return true;
+            }
+            
+            if (args.length < 3) {
+                player.sendMessage(messages.getMessage("gildia.uzycie_admin"));
+                return true;
+            }
+
+            switch (args[1].toLowerCase()) {
+                case "usun":
+                    usunGildieAdmin(player, args[2]);
+                    break;
+                default:
+                    player.sendMessage(messages.getMessage("gildia.nieznana_komenda_admin"));
+                    break;
+            }
+            return true;
+        }
+
         switch (args[0].toLowerCase()) {
             case "zaloz":
                 if (args.length < 3) {
@@ -96,6 +118,9 @@ public class GildiaCommand implements CommandExecutor {
 
     private void wyswietlPomoc(Player player) {
         player.sendMessage(messages.getMessage("pomoc.naglowek"));
+        if (player.hasPermission("gildie.admin")) {
+            player.sendMessage(messages.getMessage("pomoc.admin"));
+        }
         player.sendMessage(messages.getMessage("pomoc.zaloz"));
         player.sendMessage(messages.getMessage("pomoc.usun"));
         player.sendMessage(messages.getMessage("pomoc.zapros"));
@@ -125,7 +150,7 @@ public class GildiaCommand implements CommandExecutor {
             return;
         }
 
-        if (!gildia.getLider().equals(player.getUniqueId())) {
+        if (!gildia.getLider().equals(player.getUniqueId()) && !player.hasPermission("gildie.admin")) {
             player.sendMessage(messages.getMessage("gildia.nie_lider"));
             return;
         }
@@ -266,5 +291,16 @@ public class GildiaCommand implements CommandExecutor {
         } else {
             player.sendMessage(messages.getMessage("gildia.nie_mozna_opuscic"));
         }
+    }
+
+    private void usunGildieAdmin(Player player, String nazwa) {
+        Gildia gildia = gildiaManager.getGildia(nazwa);
+        if (gildia == null) {
+            player.sendMessage(messages.getMessage("gildia.nie_istnieje"));
+            return;
+        }
+
+        gildiaManager.usunGildie(nazwa);
+        player.sendMessage(messages.getMessage("gildia.usunieta_admin", "nazwa", nazwa));
     }
 } 
