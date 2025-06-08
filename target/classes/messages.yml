@@ -1,0 +1,50 @@
+# Wiadomości pluginu KoxiakoweGildie
+
+# Wiadomości ogólne
+prefix: "&8[&6Gildie&8]"
+no-permission: "&cNie masz uprawnień do użycia tej komendy!"
+player-only: "&cTa komenda jest dostępna tylko dla graczy!"
+player-not-found: "&cNie znaleziono gracza!"
+
+# Wiadomości gildii
+guild:
+  already-in-guild: "&cJesteś już w gildii!"
+  not-in-guild: "&cNie jesteś w żadnej gildii!"
+  not-enough-money: "&cNie masz wystarczająco pieniędzy! Potrzebujesz: &e%cost%"
+  name-taken: "&cTa nazwa gildii jest już zajęta!"
+  tag-taken: "&cTen tag gildii jest już zajęty!"
+  name-too-short: "&cNazwa gildii jest za krótka! Minimalna długość: &e%min%"
+  name-too-long: "&cNazwa gildii jest za długa! Maksymalna długość: &e%max%"
+  tag-too-short: "&cTag gildii jest za krótki! Minimalna długość: &e%min%"
+  tag-too-long: "&cTag gildii jest za długi! Maksymalna długość: &e%max%"
+  created: "&aPomyślnie utworzono gildię &e%name% &az tagiem &e%tag%"
+  deleted: "&aPomyślnie usunięto gildię &e%name%"
+  not-found: "&cTaka gildia nie istnieje!"
+  not-leader: "&cTylko lider może wykonać tę akcję!"
+  not-deputy: "&cTylko lider i zastępcy mogą wykonać tę akcję!"
+
+# Wiadomości członków
+members:
+  invited: "&aZostałeś zaproszony do gildii &e%guild% &aprzez &e%player%"
+  kicked: "&cZostałeś wyrzucony z gildii &e%guild% &cprzez &e%player%"
+  left: "&cOpuściłeś gildię &e%guild%"
+  joined: "&aDołączyłeś do gildii &e%guild%"
+  already-member: "&cTen gracz jest już członkiem gildii!"
+  not-member: "&cTen gracz nie jest członkiem gildii!"
+
+# Wiadomości zastępców
+deputy:
+  set: "&aUstawiono &e%player% &ajako zastępcę gildii"
+  removed: "&cUsunięto &e%player% &cz funkcji zastępcy gildii"
+  already-deputy: "&cTen gracz jest już zastępcą gildii!"
+  not-deputy: "&cTen gracz nie jest zastępcą gildii!"
+
+# Wiadomości informacyjne
+info:
+  header: "&6=== Informacje o gildii &e%name% &6==="
+  tag: "&fTag: &7%tag%"
+  leader: "&fLider: &7%leader%"
+  members: "&fCzłonkowie: &7%count%"
+  deputies: "&fZastępcy: &7%count%"
+  member-list: "&fLista członków:"
+  member-format: "&7- &e%player%" 

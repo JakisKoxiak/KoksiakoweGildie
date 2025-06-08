@@ -1,0 +1,19 @@
+name: KoxiakoweGildie
+version: 1.0
+main: pl.koxiakowe.gildie.KoxiakoweGildie
+api-version: 1.16
+depend: [Vault, PlaceholderAPI]
+authors: [Koxiakowe]
+description: Plugin na gildie z systemem uprawnień
+commands:
+  gildia:
+    description: Główna komenda gildii
+    usage: /gildia
+    aliases: [g]
+permissions:
+  gildie.admin:
+    description: Uprawnienia administratora gildii
+    default: op
+  gildie.zarzadzanie:
+    description: Uprawnienia do zarządzania gildią
+    default: true 

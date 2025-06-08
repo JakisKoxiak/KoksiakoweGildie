@@ -1,0 +1,16 @@
+# Konfiguracja pluginu KoxiakoweGildie
+
+# Koszt założenia gildii
+koszt_zakladania_gildii: 10000.0
+
+# Maksymalna długość nazwy gildii
+maksymalna_dlugosc_nazwy: 20
+
+# Maksymalna długość tagu gildii
+maksymalna_dlugosc_tagu: 5
+
+# Minimalna długość nazwy gildii
+minimalna_dlugosc_nazwy: 3
+
+# Minimalna długość tagu gildii
+minimalna_dlugosc_tagu: 2 
