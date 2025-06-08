@@ -294,8 +294,14 @@ public class GildiaCommand implements CommandExecutor {
     }
 
     private void opuscGildie(Player player) {
+        Gildia gildia = gildiaManager.getGildiaGracza(player.getUniqueId());
+        if (gildia == null) {
+            player.sendMessage(messages.getMessage("gildia.nie_jestes_w_gildii"));
+            return;
+        }
+
         if (gildiaManager.opuscGildie(player)) {
-            player.sendMessage(messages.getMessage("czlonkowie.opuscil", "gildia", gildiaManager.getGildiaGracza(player.getUniqueId()).getNazwa()));
+            player.sendMessage(messages.getMessage("czlonkowie.opuscil", "gildia", gildia.getNazwa()));
         } else {
             player.sendMessage(messages.getMessage("gildia.nie_mozna_opuscic"));
         }
@@ -313,11 +319,15 @@ public class GildiaCommand implements CommandExecutor {
     }
 
     private void reloadPlugin(Player player) {
+        // Zapisz dane gildii przed przeładowaniem
         gildiaManager.saveGildie();
         
+        // Przeładuj konfigurację
         plugin.reloadConfig();
+        plugin.getConfigManager().checkAndFixConfig();
         
-        plugin.getMessages().reload();
+        // Przeładuj wiadomości
+        plugin.reloadMessages();
         
         player.sendMessage(messages.getMessage("gildia.przeladowano"));
     }

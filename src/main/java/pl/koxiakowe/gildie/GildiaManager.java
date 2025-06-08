@@ -44,14 +44,21 @@ public class GildiaManager {
             return false;
         }
         
-        double koszt = plugin.getConfig().getDouble("koszt_zakladania_gildii");
-        double saldo = plugin.getEconomy().getBalance(lider);
-        plugin.getLogger().info("DEBUG: Gracz " + lider.getName() + " ma saldo: " + saldo + ", koszt: " + koszt);
-        if (saldo < koszt) {
-            return false;
+        double koszt = plugin.getConfig().getDouble("ekonomia.koszt_zakladania_gildii");
+        if (koszt > 0) {
+            if (!plugin.getServer().getPluginManager().isPluginEnabled("Vault")) {
+                plugin.getLogger().warning("Vault nie jest zainstalowany! Ekonomia jest wyłączona.");
+                return false;
+            }
+            
+            net.milkbowl.vault.economy.Economy economy = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class).getProvider();
+            double saldo = economy.getBalance(lider);
+            if (saldo < koszt) {
+                return false;
+            }
+            economy.withdrawPlayer(lider, koszt);
         }
         
-        plugin.getEconomy().withdrawPlayer(lider, koszt);
         Gildia gildia = new Gildia(nazwa, tag, lider.getUniqueId());
         addGildia(gildia);
         saveGildie();
@@ -140,6 +147,7 @@ public class GildiaManager {
             return false;
         }
 
+        String nazwaGildii = gildia.getNazwa();
         gildia.usunCzlonka(player.getUniqueId());
         graczeGildie.remove(player.getUniqueId());
         saveGildie();
