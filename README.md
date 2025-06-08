@@ -99,7 +99,3 @@ Plugin obsługuje dwie bazy danych:
 ## Autor
 
 - JakisKoxiak
-
-## Licencja
-
-Ten projekt jest objęty licencją MIT. Szczegóły znajdziesz w pliku [LICENSE](LICENSE). 
